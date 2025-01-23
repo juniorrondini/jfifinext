@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 0, 0, 0;
+  --background-end-rgb: 0, 0, 0;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg) scale(1);
+  }
+  33% {
+    transform: translateY(-50px) rotate(180deg) scale(1.5);
+  }
+  66% {
+    transform: translateY(50px) rotate(-180deg) scale(0.5);
+  }
+}
+
+@keyframes crazy-text {
+  0% {
+    color: #ff00ff;
+    transform: skew(0deg, 0deg);
+  }
+  25% {
+    color: #00ffff;
+    transform: skew(5deg, 5deg);
+  }
+  50% {
+    color: #ffff00;
+    transform: skew(-5deg, -5deg);
+  }
+  75% {
+    color: #00ff00;
+    transform: skew(-5deg, 5deg);
+  }
+  100% {
+    color: #ff00ff;
+    transform: skew(0deg, 0deg);
+  }
+}
+
+@keyframes neon-text {
+  0%,
+  100% {
+    color: #fff;
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #ff00de, 0 0 70px #ff00de, 0 0 80px #ff00de, 0 0
+      100px #ff00de, 0 0 150px #ff00de;
+  }
+  50% {
+    color: #ff00de;
+    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ff00de, 0 0 35px #ff00de, 0 0 40px #ff00de, 0 0
+      50px #ff00de, 0 0 75px #ff00de;
+  }
+}
+
+@keyframes rainbow-text {
+  0% {
+    color: #ff0000;
+  }
+  16% {
+    color: #ff8000;
+  }
+  32% {
+    color: #ffff00;
+  }
+  48% {
+    color: #00ff00;
+  }
+  64% {
+    color: #0000ff;
+  }
+  80% {
+    color: #8000ff;
+  }
+  100% {
+    color: #ff0000;
+  }
+}
+
+.animate-float {
+  animation: float 10s ease-in-out infinite;
+}
+
+.animate-crazy-text {
+  animation: crazy-text 2s linear infinite;
+}
+
+.animate-neon-text {
+  animation: neon-text 1.5s ease-in-out infinite alternate;
+}
+
+.animate-rainbow-text {
+  animation: rainbow-text 5s linear infinite;
+}
+
