@@ -28,12 +28,21 @@ export default function InsaneJfifi() {
 
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY })
+      
+      // Safer audio playback
       if (audioRef.current) {
-        audioRef.current.play()
+        audioRef.current.play().catch(error => {
+          console.warn("Audio play failed:", error)
+        })
       }
     }
 
     window.addEventListener("mousemove", handleMouseMove)
+
+    // Preload audio
+    if (audioRef.current) {
+      audioRef.current.load()
+    }
 
     return () => {
       clearInterval(headerInterval)
@@ -43,35 +52,49 @@ export default function InsaneJfifi() {
   }, [])
 
   return (
-    <div className="w-full h-full flex flex-col relative">
-      <audio ref={audioRef} src="/crazy-sound.mp3" />
+    <div className="fixed inset-0 w-screen h-screen overflow-hidden bg-black">
+      <audio 
+        ref={audioRef} 
+        src="/crazy-sound.mp3" 
+        preload="auto"
+      />
 
-      <header className="text-4xl font-bold text-center p-4 animate-crazy-text z-10">{headerPhrase}</header>
+      {/* Cabeçalho fixo */}
+      <header className="absolute top-0 left-0 w-full text-4xl font-bold text-center p-4 animate-crazy-text z-20">
+        {headerPhrase}
+      </header>
 
-      <div className="flex-grow relative overflow-hidden">
-        <h1 className="text-6xl font-bold text-center my-8 animate-neon-text">Bem-vindo à Mente de Jfifi</h1>
-        <p className="text-xl text-center max-w-2xl mx-auto animate-rainbow-text">
+      {/* Efeito de Chuva de Imagens em toda a tela */}
+      {Array.from({ length: 50 }).map((_, i) => (
+        <Image
+          key={i}
+          src={`/jfifi${(i % 5) + 1}.png`}
+          alt={`Jfifi ${i + 1}`}
+          width={50}
+          height={50}
+          className="absolute animate-rain"
+          style={{
+            left: `${Math.random() * 100}vw`,
+            top: `-${Math.random() * 200}px`,
+            animationDuration: `${3 + Math.random() * 3}s`,
+            animationDelay: `${Math.random() * 2}s`,
+            animation: `rain 5s linear infinite`,
+            transform: `rotate(${Math.random() * 360}deg)`,
+          }}
+        />
+      ))}
+
+      {/* Corpo principal */}
+      <div className="absolute inset-0 w-full h-full">
+        <h1 className="absolute top-1/4 left-1/2 transform -translate-x-1/2 text-6xl font-bold text-center animate-neon-text text-white">
+          Bem-vindo à Mente de Jfifi
+        </h1>
+        <p className="absolute top-1/3 left-1/2 transform -translate-x-1/2 text-xl text-center text-white animate-rainbow-text max-w-2xl">
           A mente de Jfifi é um vórtice de ideias caóticas, um turbilhão de pensamentos que desafiam a lógica e a razão.
           Aqui, a realidade se dobra e se contorce, criando um universo único onde o absurdo reina supremo!
         </p>
 
-        {[...Array(20)].map((_, i) => (
-          <Image
-            key={i}
-            src={`/jfifi${(i % 5) + 1}.png`}
-            alt={`Jfifi ${i + 1}`}
-            width={50}
-            height={50}
-            className="absolute animate-float"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 5}s`,
-              animationDuration: `${5 + Math.random() * 5}s`,
-            }}
-          />
-        ))}
-
+        {/* Efeito visual seguindo o mouse */}
         <div
           className="absolute w-20 h-20 rounded-full bg-gradient-to-r from-yellow-300 to-red-500 blur-xl"
           style={{
@@ -83,10 +106,10 @@ export default function InsaneJfifi() {
         />
       </div>
 
-      <footer className="text-2xl font-bold text-center p-4 animate-crazy-text z-10">
+      {/* Rodapé fixo */}
+      <footer className="absolute bottom-0 left-0 w-full text-2xl font-bold text-center p-4 animate-crazy-text z-20">
         {footerPhrase.split("").reverse().join("")}
       </footer>
     </div>
   )
 }
-
